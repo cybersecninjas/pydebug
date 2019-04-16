@@ -5,6 +5,9 @@ from pydbg import *
 from pydbg.defines import *
 
 
+# John Ombagi / @johntroony
+# https://github.com/cybersecninjas/pydebug
+
 def crash_handler(dbg):
 	'''Access Violation Handler'''
 	crash_bin = utils.crash_binning.crash_binning()
