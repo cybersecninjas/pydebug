@@ -18,19 +18,30 @@ def crash_handler(dbg):
 
 if len(sys.argv) == 2:
 	processName = sys.argv[1]
+	processName = processName.lower()
 else:
 	print "[!] Debugger needs an application to attach and debug.."
 	print "[-] %s my_app.exe" % sys.argv[0]
-	sys.exit()
+	sys.exit(1)
 
 
 dbg = pydbg()
 
-# Attach to the target Proc
+# Enumerate Processes and save results in procs
+procs = {}
 for(pid, name) in dbg.enumerate_processes():
-	if name == processName:
-		print "[+] Debugger attaching to :" + processName
-		dbg.attach(pid)
+	procs[name.lower()]=int(pid)
+
+# Attach to the target Proc
+if processName in procs:
+	print "[+] Debugger attaching to : " + processName
+	pid = procs[processName]
+	dbg.attach(pid)
+else:
+	print "[!] Did you start the app and got the correct spelling?"
+	print "[-] Couldn't find any process ID with the specified Process Name."
+	print "[-] %s my_app.exe" % sys.argv[0]
+	sys.exit(1);
 
 # Define Handler for Access Violation and Run 
 print "[+] Debugger Running"
